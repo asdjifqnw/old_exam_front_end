@@ -1,8 +1,11 @@
 # front-end
-
-> A Vue.js project
-
-## Build Setup
+系统程序设计前端页面
+### 目标
+* 实现基本功能
+* 重新封装axios(×)
+## 2019.3.18 第一次提交
+暂无描述
+## 安装过程
 
 ``` bash
 # install dependencies
@@ -16,6 +19,3 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
