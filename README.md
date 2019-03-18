@@ -4,9 +4,9 @@
 * 实现基本功能
 * 重新封装axios(×)
 ## 2019.3.18 第一次提交
-暂无描述
-## 安装过程
+添加了删除监考人信息的方法
 
+## 安装过程
 ``` bash
 # install dependencies
 npm install
