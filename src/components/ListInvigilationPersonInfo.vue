@@ -59,7 +59,7 @@ export default {
       let invigilationInfo = this.invigilationInfo;
       let modifyingInvigilationID = this.modifyingInvigilationID;
       for (let i in invigilationInfo) {
-        if ((invigilationInfo[i].invigilationID == modifyingInvigilationID)) {
+        if (invigilationInfo[i].invigilationID == modifyingInvigilationID) {
           if (
             invigilationInfo[i].numberOfTeacher ==
             invigilationInfo[i].arrangedTeacher
@@ -68,10 +68,9 @@ export default {
               message: "分配人数已满，请删除一个后再添加",
               type: "error"
             });
-          }else{
-
+          } else {
           }
-          break
+          break;
         }
       }
     },
@@ -89,10 +88,22 @@ export default {
     },
     handleDelete(index, row) {
       //   this.dialogTableVisible = true;
-      this.$message({
-        message: "删除成功",
-        type: "success"
-      });
+      let that = this;
+      this.$axios
+        .post("/deleteInvigilatePerson", {
+          invigilationid: that.modifyingInvigilationID,
+          userID: row.userID
+        })
+        .then(function(res) {
+          if (res.data.stateCode == 200) {
+            that.$message({
+              message: "删除成功",
+              type: "success"
+            });
+            that.invigilationPersonInfo.splice(index,1)
+            that.$forceUpdate()
+          }
+        });
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
