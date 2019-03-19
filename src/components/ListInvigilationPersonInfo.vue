@@ -28,6 +28,33 @@
         <el-button @click="dialogTableVisible = false">取 消</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="添加监考"
+      :append-to-body="true"
+      :before-close="handleClose"
+      :visible.sync="secondDialogTableVisible"
+    >
+      <el-table
+        :data="userInfo"
+        style="width: 100%"
+        :default-sort="{prop: 'arranged', order: 'ascending'}"
+        :max-height="250"
+      >
+        <el-table-column prop="userName" align="center" label="姓名"></el-table-column>
+        <el-table-column prop="position" align="center" label="职位"></el-table-column>
+        <el-table-column prop="phoneNumber" align="center" label="电话号"></el-table-column>
+        <el-table-column prop="arranged" align="center" label="已分配次数" sortable></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button size="text" @click="handleInsert(scope.$index, scope.row)">添加</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button @click="secondDialogTableVisible = false ">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -37,6 +64,8 @@ export default {
     return {
       invigilationInfo: [],
       invigilationPersonInfo: [],
+      userInfo: [],
+      secondDialogTableVisible: false,
       dialogTableVisible: false,
       modifyingInvigilationID: ""
     };
@@ -55,7 +84,55 @@ export default {
     });
   },
   methods: {
+    submit() {},
+    handleInsert(index, row) {
+      let that = this;
+      console.log(row);
+      console.log(this.modifyingInvigilationID);
+      for (let i in this.invigilationPersonInfo) {
+        if (row.userID == this.invigilationPersonInfo[i].userID) {
+          this.$message({
+              message: "同一场考试不能添加一样的教师",
+              type: "error"
+            });
+            return;
+        }
+      }
+      this.$axios
+        .post("/insertInvigilatePerson", {
+          invigilationid: this.modifyingInvigilationID,
+          userID: row.userID
+        })
+        .then(res => {
+          if (res.data.stateCode == 200) {
+            that.$message({
+              message: res.data.msg,
+              type: "success"
+            });
+            for (let i in that.invigilationInfo) {
+              if (
+                that.invigilationInfo[i].invigilationID ==
+                that.modifyingInvigilationID
+              ) {
+                that.invigilationInfo[i].arrangedTeacher++;
+              }
+            }
+            that.invigilationPersonInfo.push({
+              phone_number: row.phoneNumber,
+              user_name: row.userName,
+              position: row.position,
+              userID: row.userID
+            });
+          } else {
+            that.$message({
+              message: res.data.msg,
+              type: "error"
+            });
+          }
+        });
+    },
     newInvigilationPerson() {
+      let that = this;
       let invigilationInfo = this.invigilationInfo;
       let modifyingInvigilationID = this.modifyingInvigilationID;
       for (let i in invigilationInfo) {
@@ -69,6 +146,13 @@ export default {
               type: "error"
             });
           } else {
+            this.$axios
+              .get("/getUserNumberOfAllocatedInvigilation")
+              .then(res => {
+                console.log(res);
+                that.secondDialogTableVisible = true;
+                that.userInfo = res.data.info;
+              });
           }
           break;
         }
@@ -100,12 +184,21 @@ export default {
               message: "删除成功",
               type: "success"
             });
-            that.invigilationPersonInfo.splice(index,1)
-            that.$forceUpdate()
+            for (let i in that.invigilationInfo) {
+              if (
+                that.invigilationInfo[i].invigilationID ==
+                that.modifyingInvigilationID
+              ) {
+                that.invigilationInfo[i].arrangedTeacher--;
+              }
+            }
+            that.invigilationPersonInfo.splice(index, 1);
+            that.$forceUpdate();
           }
         });
     },
     handleClose(done) {
+      console.log(done);
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
