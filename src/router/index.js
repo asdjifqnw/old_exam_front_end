@@ -24,22 +24,34 @@ export default new Router({
       path: '/ModifyUserInfo',
       name: 'ModifyUserInfo',
       component: ModifyUserInfo
-    },{
-      path:'/CreateInvigilation',
-      name:'CreateInvigilation',
+    }, {
+      path: '/CreateInvigilation',
+      name: 'CreateInvigilation',
       component: () => import('@/components/CreateInvigilation.vue')
-    },{
-      path:'/ListInvigilationInfo',
-      name:'ListInvigilationInfo',
+    }, {
+      path: '/ListInvigilationInfo',
+      name: 'ListInvigilationInfo',
       component: () => import('@/components/ListInvigilationInfo.vue')
-    },{
-      path:'/ModifyInvigilation',
-      name:'ModifyInvigilation',
+    }, {
+      path: '/ModifyInvigilation',
+      name: 'ModifyInvigilation',
       component: () => import('@/components/ModifyInvigilation.vue')
-    },{
-      path:'/ListInvigilationPersonInfo',
-      name:'ListInvigilationPersonInfo',
+    }, {
+      path: '/ListInvigilationPersonInfo',
+      name: 'ListInvigilationPersonInfo',
       component: () => import('@/components/ListInvigilationPersonInfo.vue')
+    }, {
+      path: '/CreateTask',
+      name: 'CreateTask',
+      component: () => import('@/components/CreateTask.vue')
+    }, {
+      path: '/ListTaskInfo',
+      name: 'ListTaskInfo',
+      component: () => import('@/components/ListTaskInfo.vue')
+    }, {
+      path: '/ModifyTaskInfo',
+      name: 'ModifyTaskInfo',
+      component: () => import('@/components/ModifyTaskInfo.vue')
     }
   ]
 })

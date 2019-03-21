@@ -16,14 +16,20 @@
             <el-input v-model="invigilationInfo.numberOfTeacher"></el-input>
           </el-form-item>
           <el-form-item label="开始时间" prop="beginTime">
-            <el-date-picker @change="change" v-model="invigilationInfo.beginTime" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+            <el-date-picker
+              value-format="yyyy-MM-dd HH:mm:ss"
+              @change="change"
+              v-model="invigilationInfo.beginTime"
+              type="datetime"
+              placeholder="选择日期时间"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('invigilationInfo')">立即创建</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-col>{{invigilationInfo}}
+      </el-col>
     </el-row>
     <!-- {{isSuperAdmin}} -->
   </div>
@@ -45,38 +51,38 @@ export default {
         numberOfTeacher: [
           { required: true, message: "请输入需要教师人数", trigger: "blur" }
         ],
-        beginTime:[
+        beginTime: [
           { required: true, message: "请输入起始时间", trigger: "blur" }
-
         ]
       }
     };
   },
   methods: {
-    change(){
-    },
+    change() {},
     onSubmit(invigilationInfo) {
       let that = this;
       this.$refs[invigilationInfo].validate(valid => {
         if (valid) {
-          this.$axios.post("/insertNewInvigilation", that.invigilationInfo).then(function(res) {
-            console.log(res.data.stateCode);
-            if (res.data.stateCode == 200) {
-              that.$message({
-                message: "插入成功",
-                type: "success"
-              });
-              for (let key in that.invigilationInfo) {
-                that.invigilationInfo[key] = "";
+          this.$axios
+            .post("/insertNewInvigilation", that.invigilationInfo)
+            .then(function(res) {
+              console.log(res.data.stateCode);
+              if (res.data.stateCode == 200) {
+                that.$message({
+                  message: "插入成功",
+                  type: "success"
+                });
+                for (let key in that.invigilationInfo) {
+                  that.invigilationInfo[key] = "";
+                }
               }
-            }
-            if (res.data.stateCode == 401) {
-              that.$message({
-                message: res.data.msg,
-                type: "warning"
-              });
-            }
-          });
+              if (res.data.stateCode == 401) {
+                that.$message({
+                  message: res.data.msg,
+                  type: "warning"
+                });
+              }
+            });
         } else {
           that.$message({
             message: "请按要求输入信息",

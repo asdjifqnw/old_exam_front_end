@@ -61,8 +61,8 @@
               <span>公告系统管理</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="4-1">新增公告信息</el-menu-item>
-              <el-menu-item index="1-2">修改公告信息</el-menu-item>
+              <el-menu-item index="4-1" @click="CreateTask">新增公告信息</el-menu-item>
+              <el-menu-item index="1-2" @click="ListTaskInfo">修改公告信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
@@ -116,6 +116,12 @@ export default {
     };
   },
   methods: {
+    ListTaskInfo() {
+      this.$router.push({ name: "ListTaskInfo" });
+    },
+    CreateTask() {
+      this.$router.push({ name: "CreateTask" });
+    },
     ListInvigilationPersonInfo() {
       this.$router.push({ name: "ListInvigilationPersonInfo" });
     },

@@ -29,7 +29,6 @@
           </el-form-item>
         </el-form>
       </el-col>
-      {{invigilationInfo}}
     </el-row>
     <!-- {{isSuperAdmin}} -->
   </div>
