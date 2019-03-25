@@ -4,11 +4,16 @@
 ### 目标
 * 实现基本功能
 * 基于REST风格重新封装axios(×)
+## 技术栈  
+> vue \+ vue-router\+ vuex\+ axios\+ element-ui\+ SpringBoot\+ spring-data-jpa\+ sl4j等  
 ## 2019.3.18  
 添加了删除监考人信息的方法
 ## 2019.3.19  
 完成功能：监考分配的增删改查  
 待改善逻辑：按钮点击触发事件以及误操作引起的数据问题  
+## 2019.3.21
+完成功能：任务界面的增删改查  
+新用到的方法:element table 的 formate属性，参数为一个方法，可以对数据进行格式化，以及如何用js实现sleep效果
 ## 安装过程
 ``` bash
 # install dependencies
