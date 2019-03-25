@@ -75,7 +75,7 @@
         >
           <el-menu-item index="3">
             <i class="el-icon-menu"></i>
-            <span slot="title">个人信息管理</span>
+            <span slot="title" @click="ModifyPersonalInfo">个人信息管理</span>
           </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
@@ -83,8 +83,8 @@
               <span>监考信息查询</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="2-1">监考信息总览</el-menu-item>
-              <el-menu-item index="2-2">我的监考信息</el-menu-item>
+              <el-menu-item index="2-1" @click="ListAllInvigilations">监考信息总览</el-menu-item>
+              <el-menu-item index="2-2" @click="ListMyInvigilation">我的监考信息</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="3">
@@ -93,7 +93,7 @@
               <span>公告信息查询</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="4-1">查看所有公告信息</el-menu-item>
+              <el-menu-item index="4-1" @click="ListAllTask">查看所有公告信息</el-menu-item>
               <el-menu-item index="1-2">查看完成情况</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -116,6 +116,18 @@ export default {
     };
   },
   methods: {
+    ListAllTask() {
+      this.$router.push({ name: "ListAllTask" });
+    },
+    ListAllInvigilations() {
+      this.$router.push({ name: "ListAllInvigilations" });
+    },
+    ListMyInvigilation() {
+      this.$router.push({ name: "ListMyInvigilation" });
+    },
+    ModifyPersonalInfo() {
+      this.$router.push({ name: "ModifyPersonalInfo" });
+    },
     ListTaskInfo() {
       this.$router.push({ name: "ListTaskInfo" });
     },

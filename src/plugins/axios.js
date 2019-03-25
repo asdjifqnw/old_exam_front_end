@@ -4,7 +4,7 @@ import Vue from 'vue';
 import axios from "axios";
 import qs from 'qs';
 import store from '../store/index'
-
+import { Message } from 'element-ui';
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
@@ -39,6 +39,12 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function (response) {
     // Do something with response data
+    // if(response.data.stateCode!='200'){
+    //   Message({
+    //     message: response.data.msg,
+    //     type:"error"
+    //   })
+    // }
     return response;
   },
   function (error) {

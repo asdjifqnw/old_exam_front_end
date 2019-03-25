@@ -52,6 +52,31 @@ export default new Router({
       path: '/ModifyTaskInfo',
       name: 'ModifyTaskInfo',
       component: () => import('@/components/ModifyTaskInfo.vue')
+    }, {
+      path: '/ModifyPersonalInfo',
+      name: 'ModifyPersonalInfo',
+      component: () => import('@/components/ModifyPersonalInfo.vue')
+    }, {
+      path: '/ListMyInvigilation',
+      name: 'ListMyInvigilation',
+      component: () => import('@/components/ListMyInvigilation.vue')
+    }, {
+      path: '/ListAllInvigilations',
+      name: 'ListAllInvigilations',
+      component: () => import('@/components/ListAllInvigilations.vue')
+    }, {
+      path: '/ListAllTask',
+      name: 'ListAllTask',
+      component: () => import('@/components/ListAllTask.vue')
+    }, {
+      path: '/CheckDetail',
+      name: 'CheckDetail',
+      component: () => import('@/components/CheckDetail.vue')
+    }, {
+      path: '/CheckDetail2',
+      name: 'CheckDetail2',
+      component: () => import('@/components/CheckDetail2.vue')
     }
+    
   ]
 })
