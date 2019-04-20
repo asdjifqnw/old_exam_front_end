@@ -2,7 +2,7 @@
   <div>
     <el-row type="flex" justify="center" style="padding-top:2rem;">
       <el-col :lg="10">
-        <h1 style="color:red;" v-if="taskInfo.task_deadline < now">您已超时，请尽快完成任务</h1>
+        <h1 style="color:red;" v-if="taskInfo.task_deadline < now && isSubmited == false">您已超时，请尽快完成任务</h1>
         <el-form ref="taskInfo" :model="taskInfo" label-width="10rem" class="demo-ruleForm">
           <el-form-item label="任务名" prop="taskName">{{taskInfo.task_name}}</el-form-item>
           <el-form-item label="任务类型" prop="task_type">
@@ -46,59 +46,79 @@
         </el-form>
       </el-col>
     </el-row>
-    {{taskInfo}}<br/>{{object}}
+    {{taskInfo}}
+    <br>
+    {{object}}
   </div>
 </template>
 <script>
 export default {
   data: function() {
     return {
+      isSubmited: false,
       taskInfo: {},
       fileList: [],
       headers: { Authorization: this.$store.state.Token },
       now: new Date().Format("yyyy-MM-dd hh:mm:ss"),
-      object:{content:"",fileURL:"",isTimeOut:"",taskId:"",taskType:"",userId:""}
+      object: {
+        content: "",
+        fileURL: "",
+        isTimeOut: "",
+        taskId: "",
+        taskType: "",
+        userId: ""
+      }
     };
   },
   created: function() {
+    let that = this;
     console.log(this.$route.query.taskInfo);
     this.taskInfo = JSON.parse(this.$route.query.taskInfo);
-    this.object.taskId = this.taskInfo.taskid
-    this.object.taskType = this.taskInfo.task_type
-    this.object.userId = this.$store.state.userInfo.userId
-    if(this.taskInfo.task_deadline < this.now){
-      this.object.isTimeOut = true
-    }else{
-      this.object.isTimeOut = false
+    this.object.taskId = this.taskInfo.taskid;
+    this.object.taskType = this.taskInfo.task_type;
+    this.object.userId = this.$store.state.userInfo.userId;
+    if (this.taskInfo.task_deadline < this.now) {
+      this.object.isTimeOut = true;
+    } else {
+      this.object.isTimeOut = false;
     }
+    this.$axios
+      .post("/getContent", {
+        taskId: this.object.taskId,
+        userId: this.object.userId
+      })
+      .then(res => {
+        if (res.data != null) {
+          console.log(res);
+          that.isSubmited = true
+          that.object.content = res.data[0].content;
+        }
+      });
     // console.log(this.taskInfo)
   },
   methods: {
-    submit(){
-      let that = this
-      if(this.object.content == ""||this.object.content == null){
+    submit() {
+      let that = this;
+      if (this.object.content == "" || this.object.content == null) {
         this.$message({
-            message:"请填写回复内容",
-            type:"error"
-          })
-          return false;
+          message: "请填写回复内容",
+          type: "error"
+        });
+        return false;
       }
-      if(this.object.fileURL == ""||this.object.fileURL == null){
+      if (this.object.fileURL == "" || this.object.fileURL == null) {
         this.$message({
-            message:"请先上传文件",
-            type:"error"
-          })
-          return false;
+          message: "请先上传文件",
+          type: "error"
+        });
+        return false;
       }
-      for(let i in this.object){
-        if(this.object[i]==null||this.object[i]==""){
-          this.$message({
-            message:"存在错误，请刷新后再试",
-            type:"error"
-          })
-          return false;
-        }
-      }
+      this.$axios.post("/UserAndTaskInfo", this.object).then(res => {
+        that.$message({
+          message: res.data.msg,
+          type: "success"
+        });
+      });
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -111,7 +131,7 @@ export default {
     },
     success(response, file, fileList) {
       console.log(response);
-      this.object.fileURL = response[0]
+      this.object.fileURL = response[0];
     }
   }
 };

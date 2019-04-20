@@ -62,11 +62,10 @@ export default {
     }
   },
   created: function() {
-    let that = this;
-    this.$axios.get("/getAllTask").then(function(res) {
-      console.log(res);
+    let that = this;  
+    this.$axios.post("/getAllTask").then(function(res) {
       that.taskInfo = res.data;
-      console.log(that.taskInfo);
+      // console.log(res.data);
     });
   }
 };
